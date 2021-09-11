@@ -6,6 +6,7 @@ import CustomAppBar from "./components/CustomAppBar";
 import CustomFooter from "./components/CustomFooter";
 import AddClassroomScreen from "./screens/AddClassroomScreen";
 import AssignmentScreen from "./screens/AssignmentScreen";
+import SubmittedAssignments from "./screens/SubmittedAssignments";
 import "./App.css";
 
 function App() {
@@ -14,9 +15,10 @@ function App() {
       <CustomAppBar />
       {/* <ClassroomScreen /> */}
       {/* <HomeScreen /> */}
+      <SubmittedAssignments />
       {/* <AddClassroomScreen /> */}
       {/* <CustomFooter /> */}
-      <AssignmentScreen />
+      {/* <AssignmentScreen /> */}
     </div>
   );
 }

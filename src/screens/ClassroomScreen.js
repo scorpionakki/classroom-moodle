@@ -1,26 +1,24 @@
 import {
-  Avatar,
   Button,
   ButtonGroup,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Grid,
-  IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
   Paper,
+  TextField,
   Typography,
 } from "@material-ui/core";
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/core/styles";
-import FolderSharedTwoToneIcon from "@material-ui/icons/FolderSharedSharp";
-import DeleteIcon from "@material-ui/icons/Delete";
-import AssignmentIcon from "@material-ui/icons/Assignment";
 import BreadcrumbComponent from "../components/BreadcrumbComponent";
+import CustomListComponent from "../components/CustomListComponent";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +51,22 @@ function generate(element) {
 
 function ClassroomScreen() {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const uploadFolderFile = (e) => {
+    let fileLength = e.target.files.length;
+    for (let i = 0; i < fileLength; i++) {
+      console.log(e.target.files[i].name);
+    }
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Container maxWidth="lg">
       <Grid container spacing={5}>
@@ -81,8 +95,53 @@ function ClassroomScreen() {
             aria-label="contained primary button group"
             variant="contained"
           >
-            <Button startIcon={<AddIcon />}>Folder</Button>
-            <Button startIcon={<AddIcon />}>File</Button>
+            <Button startIcon={<AddIcon />} onClick={handleClickOpen}>
+              Folder
+            </Button>
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              maxWidth="xl"
+              fullWidth={true}
+            >
+              <DialogTitle id="form-dialog-title">Add Folder</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Please specify the Folder name
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Folder Name"
+                  type="text"
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={handleClose} color="primary">
+                  Add
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Button
+              startIcon={<AddIcon />}
+              component="label"
+              variant="contained"
+            >
+              File
+              <input
+                type="file"
+                name="folder_file"
+                hidden
+                multiple
+                onChange={(e) => uploadFolderFile(e)}
+              />
+            </Button>
           </ButtonGroup>
         </Grid>
 
@@ -90,44 +149,9 @@ function ClassroomScreen() {
         <Grid item xs={12} md={12}>
           <Paper elevation={3} className={classes.folderAssignmentContainer}>
             <div className={classes.demo}>
-              <List>
-                {generate(
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar variant="rounded" className={classes.rounded}>
-                        <FolderSharedTwoToneIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Single-line item" />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )}
-              </List>
+              <List>{generate(<CustomListComponent type="Folder" />)}</List>
               <Divider />
-              <List>
-                {generate(
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Avatar variant="rounded">
-                        <AssignmentIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="Single-line item"
-                      secondary="Due by: 29th Feb'21"
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )}
-              </List>
+              <List>{generate(<CustomListComponent type="Assignment" />)}</List>
             </div>
           </Paper>
         </Grid>

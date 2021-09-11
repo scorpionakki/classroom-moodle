@@ -1,23 +1,20 @@
 import {
-  Avatar,
   Button,
+  ButtonGroup,
   Container,
   Divider,
   Grid,
-  IconButton,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
   Paper,
   TextField,
   Typography,
 } from "@material-ui/core";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import DescriptionTwoToneIcon from "@material-ui/icons/DescriptionTwoTone";
-import DeleteIcon from "@material-ui/icons/Delete";
+import AddIcon from "@material-ui/icons/Add";
+import SaveIcon from "@material-ui/icons/Save";
+import CustomListComponent from "../components/CustomListComponent";
+import { loremIpsumData } from "../sampleData/SampleAssignmentDetailsText";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -28,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 685,
     width: "100%",
     overflow: "auto",
+    marginTop: "10",
   },
   rounded: {
     color: "#fff",
@@ -42,10 +40,22 @@ const useStyles = makeStyles((theme) => ({
   button: {
     width: "80%",
   },
+  assignmentDetailsHeaderContainer: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    // width: "100%",
+  },
+  studentsListContainer: {
+    minHeight: 250,
+    maxHeight: 685,
+    width: "100%",
+    overflow: "auto",
+    marginTop: "10",
+  },
 }));
 
 function generate(element) {
-  return [0, 1, 2, 3, 4, 5].map((value) =>
+  return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) =>
     React.cloneElement(element, {
       key: value,
     })
@@ -58,7 +68,15 @@ const AssignmentScreen = () => {
     console.log(fileName);
   };
 
-  const [submitted, setSubmitted] = React.useState(true);
+  const uploadAssignmentFile = (e) => {
+    let fileLength = e.target.files.length;
+    for (let i = 0; i < fileLength; i++) {
+      console.log(e.target.files[i].name);
+    }
+  };
+
+  const [submitted, setSubmitted] = React.useState(false);
+  const [type, setType] = React.useState("Faculty");
 
   const classes = useStyles();
   return (
@@ -71,15 +89,67 @@ const AssignmentScreen = () => {
       <Grid
         container
         direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-        spacing={0}
+        justifyContent="center"
+        alignItems="stretch"
       >
-        <Grid item xs={12} sm={12} md={8}>
+        <Grid item xs={12} sm={12} md={type === "Faculty" ? 8 : 8}>
           {/* Assignment Box */}
           <Container maxWidth="lg">
-            <Typography variant="h6">Assignment Details</Typography>
-            <Grid item xs={12} md={12}>
+            <Grid
+              container
+              direction="row"
+              className={classes.assignmentDetailsHeaderContainer}
+              alignItems="center"
+            >
+              <Grid item xs={12} sm={12} md={9}>
+                <Typography variant="h6" align="center">
+                  Assignment Details
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={3}
+                container
+                direction="row"
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <ButtonGroup
+                  color="primary"
+                  aria-label="contained primary button group"
+                  variant="contained"
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    startIcon={<SaveIcon />}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="contained"
+                    component="label"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    className={classes.button}
+                  >
+                    Files
+                    <input
+                      type="file"
+                      hidden
+                      multiple
+                      name="assignment_files"
+                      onChange={(e) => uploadAssignmentFile(e)}
+                    />
+                  </Button>
+                </ButtonGroup>
+              </Grid>
+            </Grid>
+            <Grid item xs={12} md={12} sm={12}>
               <Paper
                 elevation={3}
                 className={classes.folderAssignmentContainer}
@@ -88,15 +158,7 @@ const AssignmentScreen = () => {
                   <Container maxWidth="lg">
                     <TextField
                       disabled
-                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mauris metus, varius nec dictum nec, fringilla eu odio. Ut vitae sapien felis. Quisque volutpat libero sed nisl placerat elementum. Vivamus mattis fermentum arcu, in ultricies risus ullamcorper sed. Praesent fermentum tellus in tincidunt venenatis. Nunc imperdiet eu quam at blandit. Nam ut volutpat turpis. Maecenas venenatis luctus varius. Curabitur maximus leo non risus tristique, at venenatis dolor tristique. Nulla facilisi. Morbi lacinia feugiat velit. Donec luctus at est eu venenatis. Donec bibendum, dui at auctor imperdiet, erat purus convallis quam, quis finibus elit ligula vitae lorem. Duis velit erat, vulputate id semper ullamcorper, bibendum ut massa. Duis facilisis a dolor at consectetur.
-
-Maecenas scelerisque at dolor ac placerat. Quisque sollicitudin suscipit orci, et mattis tortor elementum quis. Nam vehicula turpis at purus hendrerit, eu ornare nibh maximus. Vivamus fermentum id lorem a tristique. Donec commodo, arcu vitae lacinia aliquet, massa dui mattis justo, in sodales lorem quam eu ante. Cras convallis justo vehicula interdum mollis. Donec pharetra blandit mollis. Integer eget blandit metus. Vivamus tempus mi erat, et ultricies neque commodo tempor. Aenean varius nibh nec nisl placerat, ac sollicitudin diam semper. Vivamus magna purus, pharetra nec enim vitae, venenatis lacinia risus. Cras feugiat lorem id nisl ornare sagittis. Cras accumsan dui scelerisque, molestie nibh ac, aliquam dolor.
-
-Cras aliquet tincidunt urna, non molestie odio ullamcorper vel. Donec semper urna sit amet commodo posuere. In vitae dictum est. Ut commodo efficitur velit, quis egestas risus. Sed maximus ex a ipsum laoreet porttitor. Suspendisse malesuada auctor ligula in gravida. Pellentesque molestie pellentesque est, ut tincidunt enim iaculis sed. Sed eu dui non neque dapibus dignissim eu sed urna. Mauris interdum sodales elementum.
-
-Morbi malesuada dui nec congue suscipit. Ut eget pretium tellus. Ut porttitor risus hendrerit nisl posuere, sed elementum enim interdum. Vestibulum vitae metus sed orci aliquet sodales nec eu ligula. Nunc aliquam metus eget nibh imperdiet tristique. Sed at neque id erat consequat luctus non et felis. Curabitur malesuada sollicitudin nibh, id lobortis metus rutrum sit amet. Nulla ex metus, varius a mattis eu, consequat vitae sem. Duis vehicula libero sagittis, tempor orci id, viverra mauris. Donec sapien ligula, elementum vitae gravida sed, dapibus non lectus.
-
-Vestibulum et ullamcorper lectus. Mauris sed tortor nec lacus tristique facilisis in sit amet erat. Phasellus id commodo orci. Proin efficitur et ipsum quis mattis. Fusce cursus, diam a convallis semper, arcu eros elementum nunc, et euismod orci velit at massa. Mauris quis arcu consequat, commodo lectus id, posuere enim. Ut congue enim tortor, sed congue purus commodo a. Fusce non finibus nunc, et laoreet nisl. Nulla ut ornare diam."
+                      defaultValue={loremIpsumData}
                       multiline
                       minRows={Infinity}
                       maxRows={20}
@@ -104,35 +166,27 @@ Vestibulum et ullamcorper lectus. Mauris sed tortor nec lacus tristique facilisi
                     />
                   </Container>
                   <Divider />
-                  <List>
-                    {generate(
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar variant="rounded" className={classes.rounded}>
-                            <DescriptionTwoToneIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Single-line item" />
-                        <ListItemSecondaryAction>
-                          <IconButton edge="end" aria-label="delete">
-                            <DeleteIcon />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    )}
-                  </List>
+                  <List>{generate(<CustomListComponent type="File" />)}</List>
                 </div>
               </Paper>
             </Grid>
           </Container>
         </Grid>
-        <Grid item xs={12} sm={12} md={4}>
+        <Grid item xs={12} sm={12} md={type === "Faculty" ? 2 : 4}>
           {/* Submission Box */}
           <Container maxWidth="lg">
-            <Typography variant="h6">Your Submission</Typography>
+            <Typography
+              variant="h6"
+              className={classes.assignmentDetailsHeaderContainer}
+            >
+              {type === "Student" ? "Your Submission" : "Students List"}
+            </Typography>
             <Grid item xs={12} sm={12} md={12}>
-              {submitted ? (
-                <Paper className={classes.folderAssignmentContainer}>
+              {submitted && type === "Student" ? (
+                <Paper
+                  className={classes.folderAssignmentContainer}
+                  elevation={3}
+                >
                   <Grid
                     item
                     xs={12}
@@ -178,8 +232,11 @@ Vestibulum et ullamcorper lectus. Mauris sed tortor nec lacus tristique facilisi
                     </Button>
                   </Grid>
                 </Paper>
-              ) : (
-                <Paper className={classes.folderAssignmentContainer}>
+              ) : type === "Student" ? (
+                <Paper
+                  className={classes.folderAssignmentContainer}
+                  elevation={3}
+                >
                   <Grid
                     item
                     xs={12}
@@ -192,20 +249,6 @@ Vestibulum et ullamcorper lectus. Mauris sed tortor nec lacus tristique facilisi
                     className={classes.form}
                   >
                     <Typography variant="h6">Status: Submitted</Typography>
-                    {/* <Button
-                      variant="contained"
-                      component="label"
-                      color="primary"
-                      className={classes.button}
-                    >
-                      Add Submission
-                      <input
-                        type="file"
-                        hidden
-                        name="student_file"
-                        onChange={(e) => uploadStudentFile(e)}
-                      />
-                    </Button> */}
                     <Divider style={{ width: "100%" }} />
                     <Typography variant="h6" align="center">
                       File Name: 202012056-Lab4.zip
@@ -216,23 +259,35 @@ Vestibulum et ullamcorper lectus. Mauris sed tortor nec lacus tristique facilisi
                     <Typography variant="h6" align="center">
                       Submission Date: 5th Sept'21 6:00PM
                     </Typography>
-                    {/* <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                    >
-                      Confirm
-                    </Button>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                    >
-                      Reset
-                    </Button> */}
                   </Grid>
+                </Paper>
+              ) : (
+                <Paper className={classes.studentsListContainer} elevation={3}>
+                  <Container>
+                    <Typography variant="h6" align="left">
+                      Submitted
+                    </Typography>
+                    <List>
+                      {generate(
+                        <CustomListComponent
+                          type="Student"
+                          assignmentDone="true"
+                        />
+                      )}
+                    </List>
+                    <Divider style={{ width: "100%" }} />
+                    <Typography variant="h6" align="left">
+                      Left
+                    </Typography>
+                    <List>
+                      {generate(
+                        <CustomListComponent
+                          type="Student"
+                          assignmentDone="false"
+                        />
+                      )}
+                    </List>
+                  </Container>
                 </Paper>
               )}
             </Grid>
