@@ -8,18 +8,27 @@ import AddClassroomScreen from "./screens/AddClassroomScreen";
 import AssignmentScreen from "./screens/AssignmentScreen";
 import SubmittedAssignments from "./screens/SubmittedAssignments";
 import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <CustomAppBar />
-      {/* <ClassroomScreen /> */}
-      {/* <HomeScreen /> */}
-      <SubmittedAssignments />
-      {/* <AddClassroomScreen /> */}
-      {/* <CustomFooter /> */}
-      {/* <AssignmentScreen /> */}
-    </div>
+    <Router>
+      <div className="App">
+        <CustomAppBar />
+        <Switch>
+          <Route path="/classroom" exact component={ClassroomScreen} />
+          <Route path="/" exact component={HomeScreen} />
+          <Route
+            path="/submitted-assignments"
+            exact
+            component={SubmittedAssignments}
+          />
+          <Route path="/add-classroom" exact component={AddClassroomScreen} />
+          {/* <CustomFooter /> */}
+          <Route path="/assignment" exact component={AssignmentScreen} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
